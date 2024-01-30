@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /app/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2023 --port=2024" 
+
+    volumes:
+      - ./:/app
+      - ./docker/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+      - ./docker/php.ini:/etc/php/8.3/cli/conf.d/99-app.ini
+    ports:
+      - 2024:2024
+      - 2023:2023
